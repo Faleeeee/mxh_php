@@ -15,8 +15,9 @@
         <div id="myThongBao" style="display: none">  
             <?php
             $thongBao = "SELECT * FROM user 
-            inner JOIN notification ON notification.noti_by = user.user_id and notification.noti_by != $user_id
-            inner JOIN posts ON posts.post_by = $user_id and notification.post_id = posts.post_id ORDER BY notification_id DESC";
+            inner JOIN notification ON notification.noti_by = user.user_id and notification.noti_by != $user_id and notification.noti_to = $user_id 
+            left JOIN posts ON posts.post_by = $user_id and notification.post_id = posts.post_id
+            ORDER BY notification_id DESC";
             $result_tb = $ketnoi->query($thongBao);  
             if ($result_tb !== null && $result_tb->num_rows > 0) {
                 while ($row_tb = $result_tb->fetch_assoc()) 
@@ -26,6 +27,8 @@
                         $num_images = count($images);
                         // Lấy giá trị đầu tiên trong mảng
                         $first_image = reset($images);
+
+            if($row_tb["post_id"] !== null){
             ?>
             <a href="index.php?pid=10&&post_id=<?php echo $row_tb['post_id']?>" style="position:relative">
                 <div class="ava_thong_bao"style="background-image: url('img/<?php echo $row_tb["avartar"]?>')"></div>
@@ -33,14 +36,26 @@
                 <div style="font-size:15px"><?php echo $row_tb["noti_content"]?></div>
                 <div style="background-image: url('img/<?php echo $first_image?>');background-size:cover;background-position:center;width:40px;height:50px;float:left;position:absolute;top:10px;right:10px"></div>
             </a>
-            <?php }
+            <?php } else{?>
+            <a href="index.php?pid=4" style="position:relative">
+                <div class="ava_thong_bao"style="background-image: url('img/<?php echo $row_tb["avartar"]?>')"></div>
+                <div style="font-weight:500"><?php echo $row_tb["username"]?></div>
+                <div style="font-size:15px"><?php echo $row_tb["noti_content"]?></div>
+            </a>
+            <?php }}
         }else echo "ko có thông báo"?>
         </div>
     </div>
     <div class="trang_ca_nhan" style="background-image: url('img/<?php echo $row_id["avartar"]?>')" onclick="showSelect()">
-        <div id="mySelect" class="ben_phai_trong" style="display: none;">    
-            <a href="index.php?pid=1" style="border-radius: 10px 10px 0 0">Trang cá nhân</a>
-            <a href="dangnhap/ctrl_logout.php"style="border-radius: 0 0 10px 10px">Đăng xuất</a>
+        <div id="mySelect" class="ben_phai_trong" style="display: none;">  
+            <a style="border-radius: 10px 10px 0 0;border-bottom:1px solid #EEE">
+                <div><?php echo $row_id["username"]?></div>
+                <div style="font-size:12px;color:gray"><?php echo $row_id["email"]?></div>
+            </a>  
+            <a href="index.php?pid=1"><i class="fa-solid fa-user"></i> Trang cá nhân</a>
+            <a href="index.php?pid=13"><i class="fa-solid fa-user-pen"></i> Đổi mật khẩu</a>
+            <a href="dangnhap/ctrl_logout.php"style="border-radius: 0 0 10px 10px"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+            
         </div>
     </div>
 </div>

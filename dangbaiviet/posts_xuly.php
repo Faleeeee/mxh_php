@@ -1,24 +1,11 @@
 <html>
-
 <head>
-  <script src="https://kit.fontawesome.com/fec980010a.js" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/like.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://kit.fontawesome.com/fec980010a.js" crossorigin="anonymous"></script>
-  <title>Thêm bài viết</title>
   <link rel="stylesheet" href="css/luot_anh.css">
   <link rel="stylesheet" href="css/cmt.css">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/like.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-
 <body>
   <style>
     .bai {
@@ -298,9 +285,8 @@
 
         <!-- Like Icon -->
         <form id="likeForm" method="post" action="" style="float:left; cursor:pointer">
-          <input type="hidden" name="post_id" value="<?php echo $row["post_id"] ?>">
           <input type="hidden" name="like_by" value="<?php echo $user_id ?>">
-          <a class="like-button<?php echo $liked_class; ?>" data-postid="<?php echo $row["post_id"]; ?>">
+          <a class="like-button<?php echo $liked_class; ?>" data-postid="<?php echo $row["post_id"]; ?>" data-postby="<?php echo $row["post_by"]; ?>">
             <span class="like-icon">
               <div class="heart-animation-1"></div>
               <div class="heart-animation-2"></div>
@@ -404,9 +390,8 @@
                   <div class="footer"
                     style="width:100%; height:6vh;padding:10px; float:left; border-top: lightgray solid 1px;">
                     <form id="likeForm" method="post" action="" style="float:left; cursor:pointer; margin-left:5px;">
-                      <input type="hidden" name="post_id" value="<?php echo $row["post_id"] ?>">
                       <input type="hidden" name="like_by" value="<?php echo $user_id ?>">
-                      <a class="like-button<?php echo $liked_class; ?>" data-postid="<?php echo $row["post_id"]; ?>">
+                      <a class="like-button<?php echo $liked_class; ?>" data-postid="<?php echo $row["post_id"]?>" data-postby="<?php echo $row["post_by"]; ?>">
                         <span class="like-icon">
                           <div class="heart-animation-1"></div>
                           <div class="heart-animation-2"></div>
@@ -426,7 +411,7 @@
                         <i class="fa-regular fa-paper-plane"></i>
                       </button>
                     </div>
-                    <div class="save not_saved" style="float:right">
+                    <div class="save not_saved" data-postid="<?php echo $row["post_id"]; ?>" data-saveby="<?php echo $user_id;?>"" style="float:right">
                       <i class="fa-regular fa-bookmark" style="scale:1.5;margin: 10px"></i>
                     </div>
                     <!-- add comment -->
@@ -436,7 +421,7 @@
                           style="width: 25px; height: 25px; left:0px;top:13px;position:absolute; z-index: 1;">
                         <textarea name="cmt_content_<?php echo $row["post_id"]; ?>" placeholder="Thêm bình luận"
                           style="border: none; width:90%; height:7vh; padding:5px 0 0 40px; position:absolute; left:0"></textarea>
-                        <button type="button" class="comment-btn submit_cmt" data-postid="<?php echo $row["post_id"]; ?>"
+                        <button type="button" class="comment-btn submit_cmt" data-postid="<?php echo $row["post_id"]; ?>" data-postby="<?php echo $row["post_by"]; ?>"
                           data-cmtby="<?php echo $user_id; ?>"
                           style="border: none; background: none; color: rgb(0, 162, 255); position:absolute; right:0; top:10px;">Post</button>
                       </form>
@@ -455,9 +440,9 @@
         <div class="modal-dialog">
           <form action="" enctype="multipart/form-data" method="post">
             <div class="modal-content" style="width:480px;height:420px; border-radius:15px;margin-top:20vh">
-              <div class="modal-header" style="border-bottom: 1px solid #DBDBDB">
-                <h5 class="modal-title" style="position:absolute;left:42%;padding:10px;text-align:center;">Chia sẻ</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <div class="modal-header" style="border-bottom: 1px solid #DBDBDB;height:50px">
+                <h5 class="modal-title" style="position:absolute;left:42%;text-align:center;">Chia sẻ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="border:none;padding:30px;background:none;position:absolute;right:0">&times;</button>
               </div>
               <div class="modal-body" style="padding:0;overflow:auto">
                 <!-- Search -->
@@ -499,15 +484,16 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary send_post_btn"
-                  data-postid="<?php echo $row["post_id"] ?>">Gửi</button>
+                  data-postid="<?php echo $row["post_id"] ?>" data-postby="<?php echo $row["post_by"]?>">Gửi</button>
               </div>
             </div>
           </form>
         </div>
       </div>
 
-      <div class="luu"> <i class="fa-regular fa-bookmark"></i></div><br>
-    </div>
+      <div class="luu" data-postid="<?php echo $row["post_id"]; ?>" data-saveby="<?php echo $user_id;?>"" style="float:right">
+       <i class="fa-regular fa-bookmark"></i></div><br>
+      </div>
     <?php
     }
     ?>
@@ -520,6 +506,7 @@
       $('.like-button').on('click', function (e) {
         e.preventDefault();
         var post_id = $(this).data('postid');
+        var post_by = $(this).data('postby');
         var like_by = $('input[name="like_by"]').val();
 
         // Thay đổi trạng thái của nút like ngay lập tức
@@ -533,6 +520,7 @@
           type: 'POST',
           data: {
             'post_id': post_id,
+            'post_by': post_by,
             'like_by': like_by,
             'isLiked': isLiked
           },
@@ -548,6 +536,7 @@
       $('.submit_cmt').on('click', function (event) {
         event.preventDefault();
         var post_id = $(this).data('postid');
+        var post_by = $(this).data('postby');
         var comment_by = $(this).data('cmtby');
         var cmt_content = $('textarea[name="cmt_content_' + post_id + '"]').val()
         $.ajax({
@@ -555,6 +544,7 @@
           url: "dangbaiviet/get_comments.php",
           data: {
             post_id: post_id,
+            post_by: post_by,
             comment_by: comment_by,
             cmt_content: cmt_content
           },
@@ -572,6 +562,7 @@
       $('.send_post_btn').on('click', function (e) {
         e.preventDefault();
         var post_id = $(this).data('postid');
+        var post_by = $(this).data('postby');
         // Thu thập dữ liệu từ các checkbox đã chọn
         var selectedValues = [];
         $('input[name="share_to"]:checked').each(function () {
@@ -583,6 +574,7 @@
           data: {
             share_by: $('input[name="share_by"]').val(),
             post_id: post_id,
+            post_by: post_by,
             share_to: selectedValues // Gửi mảng các giá trị đã chọn
           },
           success: function (response) {
@@ -677,4 +669,56 @@
 
     // Gọi hàm khởi tạo sliders khi trang được load
     document.addEventListener('DOMContentLoaded', initSliders);
+
+     // luu bai viet
+     $(document).ready(function() {
+    // Kiểm tra trạng thái lưu của mỗi bài viết khi tải trang
+    $('.save, .luu').each(function() {
+        var post_id = $(this).data('postid');
+        var user_id = $(this).data('saveby');
+        var icon = $(this).find('i');
+
+        $.ajax({
+            url: 'menu/trangthailuu.php',
+            type: 'POST',
+            data: {
+                post_id: post_id,
+                user_id: user_id
+            },
+            success: function(response) {
+                if (response === "saved") {
+                    icon.removeClass('fa-regular fa-bookmark').addClass('fa-solid fa-bookmark');
+                } else {
+                    icon.removeClass('fa-solid fa-bookmark').addClass('fa-regular fa-bookmark');
+                }
+            }
+        });
+    });
+
+    // Cập nhật trạng thái lưu khi người dùng nhấp vào nút lưu
+    $('.save, .luu').click(function() {
+        var post_id = $(this).data('postid');
+        var user_id = $(this).data('saveby');
+        var icon = $(this).find('i');
+
+        $.ajax({
+            url: 'menu/luubaiviet.php',
+            type: 'POST',
+            data: {
+                post_id: post_id,
+                user_id: user_id
+            },
+            success: function(response) {
+                // Tìm tất cả các phần tử có cùng data-postid
+                var samePostIdElements = $('.save[data-postid="' + post_id + '"], .luu[data-postid="' + post_id + '"]');
+
+                if (response === "success") {
+                    samePostIdElements.find('i').removeClass('fa-regular fa-bookmark').addClass('fa-solid fa-bookmark');
+                } else if (response === "deleted") {
+                    samePostIdElements.find('i').removeClass('fa-solid fa-bookmark').addClass('fa-regular fa-bookmark');
+                }
+            }
+        });
+    });
+});
   </script>
